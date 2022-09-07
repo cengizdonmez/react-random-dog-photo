@@ -3,28 +3,35 @@ import './App.css';
 import { useEffect, useState } from "react";
 function App() {
 
-  const [data, setData] = useState(0);
-  const [image, setImage] = useState(0);
-  
-  useEffect(() => {
-      fetch('https://dog.ceo/api/breeds/image/random')
-    .then(response => {
-      if(response.ok) {
-        return response.json();
-      }
-      console.log(response);
-    })
-    .then(data => {
-      setData(data);
-    })  
-    .catch(error => console.log(error))
-  }, [image]);
+  const [go, setGo] = useState(1);
+  const [image, setImage] = useState(false);
 
+  useEffect(() => {
+    // component ilk yüklendiğinde çalışıyor.
+    console.log('ilk')
+    fetch('https://dog.ceo/api/breeds/image/random')
+      .then(res => res.json())
+      .then(data => setImage(data))
+
+    return () => {
+      // destroy
+      console.log('destroy')
+    }
+  }, [])
+
+  useEffect(() => {
+    fetch('https://dog.ceo/api/breeds/image/random')
+      .then(res => res.json())
+      .then(data => setImage(data))
+    // component her yenilendiğinde çalışıyor.
+    console.log('yenilendi')
+  }, [go]);
+  
   return (
     <div className="App">
       <div className="image-content">
-        <img className="img" src={data.message} alt="" />
-        <button onClick={setImage}>Random</button>
+        {image && <img className="img" src={image.message} alt=""/>}
+        <button onClick={() => setGo(go => go + 1)}>Random</button>
       </div>
     </div>
   );
