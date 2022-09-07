@@ -1,4 +1,4 @@
-# Creating Light/Dark mode on a React App with Context
+# Random Dog Photo
 
 ## Demo Link
 
